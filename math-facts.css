@@ -1,6 +1,9 @@
 #math-app {
   height: 100vh;
 }
+i.material-icons {
+  vertical-align: middle;
+}
 .mode-title {
   font-size: 1.3em;
   text-align: right;

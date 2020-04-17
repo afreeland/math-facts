@@ -265,6 +265,7 @@ var app = new Vue({
     feedbackModulus: generateRandomInt(5, 9),
     feedback: null,
     answerVisible: false, // lets us know if the answer is on screen for clicking/arrow through facts
+    enableSounds: false,
   },
   methods: {
     generateFacts: function () {

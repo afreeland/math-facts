@@ -67,6 +67,24 @@
                 </div>
               </div>
 
+              <div class="audio" v-if="!studyMode">
+                <div>
+                  <p>Play Sounds</p>
+                  <div class="switch">
+                    <label>
+                      <i class="material-icons">volume_off</i>
+                      <input type="checkbox" v-model="enableSounds">
+                      <span class="lever"></span>
+                      <i class="material-icons">volume_up</i>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <p></p>
+                </div>
+              </div>
+
 
               <stopwatch style="margin: 30px 0;" />
 
@@ -97,14 +115,26 @@
         </div>
 
         <div class="col s3">
-          <p class="mode-title">{{ studyMode ? "Study Mode" : "Game Mode"}}</p>
-          <div class="skip-container" v-if="!studyMode">
-            <span class="grey-text lighten-2">Skips Remaining</span>
 
-            <i v-for="(skip, index) in skipsAllowed" :key="skip" class="material-icons">
-              {{ index < skipsRemaining ? "lens" : "panorama_fish_eye"}}
-            </i>
+          <div v-if="studyMode">
+            <p class="mode-title">Study Mode</p>
+            <small class="grey-text lighten-2" style="display: block; text-align: right;">
+              <i class="material-icons" style="vertical-align: middle;">info_outline</i>
+              Tip: Use right arrow to move to next fact
+            </small>
           </div>
+
+          <div v-if="!studyMode">
+            <p class="mode-title">Game Mode</p>
+            <div class="skip-container" v-if="!studyMode">
+              <span class="grey-text lighten-2">Skips Remaining</span>
+
+              <i v-for="(skip, index) in skipsAllowed" :key="skip" class="material-icons">
+                {{ index < skipsRemaining ? "lens" : "panorama_fish_eye"}}
+              </i>
+            </div>
+          </div>
+
         </div>
 
 
