@@ -7,14 +7,17 @@
   <title>Math Facts</title>
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.css">
   <link rel="stylesheet" href="math-facts.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
 
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -34,45 +37,76 @@
 
       <div class="row">
 
-        <div class="col s3">
+        <div class="col s4">
           <div class="row">
-            <div class="col s6">
+            <div class="col s6" style="text-align: center;">
 
               <p class="blue-grey-text" v-on:click="generateFacts">Choose Min/Max Numbers</p>
               <div id="multiplication-range" style="margin-top: 55px;" ref="slider"></div>
 
 
-
-
-              <p>Show Answer</p>
+              <p>Study Mode</p>
               <div class="switch">
                 <label>
                   Off
-                  <input type="checkbox" v-model="showAnswer" v-on:change="toggleShowAnswer">
+                  <input type="checkbox" v-model="studyMode" v-on:change="toggleStudyMode">
                   <span class="lever"></span>
                   On
                 </label>
               </div>
 
+              <div v-if="studyMode">
+                <p>Always Show Answer</p>
+                <div class="switch">
+                  <label>
+                    Off
+                    <input type="checkbox" v-model="showAnswer" v-on:change="displayAnswer">
+                    <span class="lever"></span>
+                    On
+                  </label>
+                </div>
+              </div>
+
 
               <stopwatch style="margin: 30px 0;" />
-
 
             </div>
           </div>
         </div>
 
-        <div class="col s6">
+        <div class="col s5">
 
-          <div class="facts" v-on:click="factsHandler" v-bind:class="{ pointer: showAnswer }">
+          <div class="facts" v-on:click="factsHandler" v-bind:class="{ pointer: studyMode, noselect: studyMode }">
             <div class="fact">{{facts[0]}}</div>
             <div class="fact">{{facts[1]}}</div>
             <input type="number" v-bind:min="slider.min" v-bind:max="slider.max" class="answer browser-default"
-              v-model="answer" v-on:keyup.enter="validate" v-bind:readonly="showAnswer">
+              v-model="answer" v-on:keyup.enter="validate" v-bind:readonly="studyMode">
+            <a class="btn-flat grey-text lighten-2" v-show="!studyMode && skipsRemaining > 0"
+              v-on:click="skipFact">SKIP</a>
+            <i class="material-icons missed-fact" v-show="!studyMode && isIncorrect">close</i>
           </div>
 
+          <div class="streak-container" v-if="!studyMode">
+            <p>YOUR STREAK <span>{{streak}}</span></p>
+            <span class="highScore teal-text">High Score {{this.highScore}}</span>
+          </div>
 
+          <div class="feedback" v-bind:class="{ active: feedback !== null}">
+            {{feedback}}
+          </div>
         </div>
+
+        <div class="col s3">
+          <p class="mode-title">{{ studyMode ? "Study Mode" : "Game Mode"}}</p>
+          <div class="skip-container" v-if="!studyMode">
+            <span class="grey-text lighten-2">Skips Remaining</span>
+
+            <i v-for="(skip, index) in skipsAllowed" :key="skip" class="material-icons">
+              {{ index < skipsRemaining ? "lens" : "panorama_fish_eye"}}
+            </i>
+          </div>
+        </div>
+
 
       </div>
 

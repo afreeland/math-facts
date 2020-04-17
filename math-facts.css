@@ -1,9 +1,25 @@
+#math-app {
+  height: 100vh;
+}
+.mode-title {
+  font-size: 1.3em;
+  text-align: right;
+  color: #ee6e73;
+}
+
 .facts {
   display: flex;
   flex-direction: column;
   justify-content: right;
   width: 250px;
   margin: 0 auto;
+  position: relative;
+}
+
+.facts a {
+  position: absolute;
+  bottom: 50px;
+  left: 0;
 }
 
 .fact {
@@ -67,4 +83,74 @@ input[type=number] {
 
 .pointer {
   cursor: pointer;
+}
+
+.streak-container {
+  text-align: right;
+  margin-top: 80px;
+}
+
+.streak-container p {
+  font-family: 'Bangers', cursive;
+  text-transform: uppercase;
+  color: #ee6e73;
+  font-size: 3em;
+  margin: 0;
+}
+
+.streak-container p span {
+  color: #3fb8af;
+}
+
+.streak-container span.highScore {
+  font-size: .8em;
+}
+
+.skip-container {
+  margin: 10px 0;
+  text-align: right;
+}
+
+.skip-container i {
+  color: #ee6e73;
+  vertical-align: middle;
+}
+
+.feedback {
+  color: #3fb8af;
+  text-align: center;
+  font-size: 2em;
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
+.feedback.active {
+  opacity: 1;
+}
+
+.missed-fact {
+  position: absolute;
+  bottom: 0;
+  right: -40px;
+  font-size: 2.4em;
+  color: #d33939;
+  animation: incorrect 2s;
+}
+
+@keyframes incorrect {
+  0% {
+    color: silver;
+  }
+  100% {
+    color: #d33939;
+  }
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
 }
