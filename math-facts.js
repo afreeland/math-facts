@@ -159,61 +159,21 @@ const right = [
   "Sackboy",
 ]
 
-const sounds = {
-  success: [
-    {
-      icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
-      label: 'Random',
-      value: 'Random'
-    },
-    {
-      icon: 'https://pbs.twimg.com/profile_images/430115808182665216/6BWNI5EN.png',
-      label: 'Blubbery',
-      value: 'Blubbery'
-    },
-    {
-      icon: 'https://cdn.iconscout.com/icon/free/png-256/chimes-2-1136911.png',
-      label: 'Digital Chime',
-      value: 'DigitalChime'
-    },
-    {
-      icon: 'https://cdn.apk4all.com/wp-content/uploads/apps/Super-Jim-Jump-pixel-3d/JyVkLjd1GeCKKOLEqzDXs0rn3rPPIzlacdCrcPzxP-Q8c01JKtJxJ8FB9t0Za5UDx7s-170x170.png',
-      label: 'Jump',
-      value: 'Jump'
-    },
-    {
-      icon: 'https://www.freeiconspng.com/uploads/success-icon-11.png',
-      label: 'Success',
-      value: 'Success'
-    }
-  ],
-  missed: [
-    {
-      icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
-      label: 'Cymbals',
-      value: 'Cymbals'
-    },
-    {
-      icon: 'https://images.vexels.com/media/users/3/137801/isolated/lists/34f9d0c23a14ce84335304e8e0583da7-splatter-paint-droplet-splash-silhouette.png',
-      label: 'Metal Splat',
-      value: 'MetalSplat'
-    },
-    {
-      icon: 'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/spray_can.png',
-      label: 'Rattle',
-      value: 'Rattle'
-    },
-    {
-      icon: 'https://vignette.wikia.nocookie.net/pixel-gun-3d/images/9/93/Scourge_of_the_king_chipping_whip.png/revision/latest/scale-to-width-down/340?cb=20191221160900',
-      label: 'Thwip',
-      value: 'Thwip'
-    },
-    {
-      icon: 'https://vignette.wikia.nocookie.net/portalworldsgame/images/9/98/Blue_Jellyfish.png/revision/latest/scale-to-width-down/340?cb=20190808122051',
-      label: 'Wobble',
-      value: 'Wobble'
-    }
-  ]
+function copyText(text) {
+  const el = document.createElement("textarea");
+  el.value = text;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+}
+
+function formatShareMessage({ name, highScore, skipsRemaining }) {
+  return `
+    ${name} is on 🔥 \n
+    High Score: ${highScore} \n
+    Skips Remaning: ${skipsRemaining} \n
+  `
 }
 
 Vue.component('stopwatch', {
@@ -535,10 +495,52 @@ var app = new Vue({
       }
 
     },
-    toggleShowAnswer: function () {
-      if (this.showAnswer) {
+    shareHighScore: function () {
 
-      }
+      let payload = {
+        highScore: this.highScore,
+        skipsRemaining: this.skipsRemaining,
+      };
+
+      let text = ''
+      swal({
+        text: 'Enter your name',
+        content: "input",
+        button: {
+          text: "Next",
+          closeModal: false,
+        },
+      })
+        .then(name => {
+          payload.name = name;
+          text = formatShareMessage(payload)
+          swal({
+            title: "Share your skills",
+            text,
+            buttons: {
+              cancel: "Cancel",
+              text: {
+                text: "Copy Text",
+                value: "text",
+              },
+              link: {
+                text: "Copy Link",
+                value: "link"
+              },
+            }
+          }).then(copyType => {
+            let type = 'Score'
+            if (copyType === 'text') {
+              copyText(text)
+            }
+            if (copyType === 'link') {
+              const serialized = btoa(JSON.stringify(payload))
+              copyText(`http://mathfactsfor.us?share=${serialized}`);
+              type = 'Link'
+            }
+            M.toast({ html: `${type} copied` })
+          })
+        })
     },
     factsHandler: function () {
       if (this.studyMode) {
@@ -573,6 +575,20 @@ var app = new Vue({
     }
   },
   mounted: function () {
+    // Check if coming to this page from a share
+    const params = new URLSearchParams(window.location.search);
+    const shareData = params.get('share');
+    if (shareData !== null) {
+      // Someone shared high score with us
+      try {
+        const payload = JSON.parse(atob(shareData))
+        swal(formatShareMessage(payload));
+      } catch (e) {
+        console.error(e);
+      }
+
+    }
+
     noUiSlider.create(this.$refs.slider, {
       start: [this.slider.startMin, this.slider.startMax],
       step: this.slider.step,

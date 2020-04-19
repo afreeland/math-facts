@@ -126,7 +126,10 @@
 
           <div class="streak-container" v-if="!studyMode">
             <p>YOUR STREAK <span>{{streak}}</span></p>
-            <span class="highScore teal-text">High Score {{this.highScore}}</span>
+            <span class="highScore teal-text pointer" v-on:click="shareHighScore">
+              <i class="material-icons">share</i>
+              Share your High Score {{this.highScore}}
+            </span>
           </div>
 
           <div class="feedback" v-bind:class="{ active: feedback !== null}">
