@@ -68,20 +68,40 @@
               </div>
 
               <div class="audio" v-if="!studyMode">
-                <div>
+                <div style="margin: 30px 0;">
                   <p>Play Sounds</p>
                   <div class="switch">
                     <label>
                       <i class="material-icons">volume_off</i>
-                      <input type="checkbox" v-model="enableSounds">
+                      <input type="checkbox" v-model="enableSounds" v-on:change="initDropdown">
                       <span class="lever"></span>
                       <i class="material-icons">volume_up</i>
                     </label>
                   </div>
                 </div>
 
-                <div>
-                  <p></p>
+                <div v-if="enableSounds">
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <select class="icons" v-model="successSound">
+                        <option v-for="option in sounds.success" v-bind:value="option.value"
+                          v-bind:data-icon="option.icon">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                      <label>Success Sound</label>
+                    </div>
+
+                    <div class="input-field col s12">
+                      <select class="icons" v-model="missedSound">
+                        <option v-for="option in sounds.missed" v-bind:value="option.value"
+                          v-bind:data-icon="option.icon">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                      <label>Missed Sound</label>
+                    </div>
+                  </div>
                 </div>
               </div>
 

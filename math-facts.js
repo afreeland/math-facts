@@ -159,9 +159,62 @@ const right = [
   "Sackboy",
 ]
 
-const words = [
-
-]
+const sounds = {
+  success: [
+    {
+      icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
+      label: 'Random',
+      value: 'Random'
+    },
+    {
+      icon: 'https://pbs.twimg.com/profile_images/430115808182665216/6BWNI5EN.png',
+      label: 'Blubbery',
+      value: 'Blubbery'
+    },
+    {
+      icon: 'https://cdn.iconscout.com/icon/free/png-256/chimes-2-1136911.png',
+      label: 'Digital Chime',
+      value: 'DigitalChime'
+    },
+    {
+      icon: 'https://cdn.apk4all.com/wp-content/uploads/apps/Super-Jim-Jump-pixel-3d/JyVkLjd1GeCKKOLEqzDXs0rn3rPPIzlacdCrcPzxP-Q8c01JKtJxJ8FB9t0Za5UDx7s-170x170.png',
+      label: 'Jump',
+      value: 'Jump'
+    },
+    {
+      icon: 'https://www.freeiconspng.com/uploads/success-icon-11.png',
+      label: 'Success',
+      value: 'Success'
+    }
+  ],
+  missed: [
+    {
+      icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
+      label: 'Cymbals',
+      value: 'Cymbals'
+    },
+    {
+      icon: 'https://images.vexels.com/media/users/3/137801/isolated/lists/34f9d0c23a14ce84335304e8e0583da7-splatter-paint-droplet-splash-silhouette.png',
+      label: 'Metal Splat',
+      value: 'MetalSplat'
+    },
+    {
+      icon: 'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/spray_can.png',
+      label: 'Rattle',
+      value: 'Rattle'
+    },
+    {
+      icon: 'https://vignette.wikia.nocookie.net/pixel-gun-3d/images/9/93/Scourge_of_the_king_chipping_whip.png/revision/latest/scale-to-width-down/340?cb=20191221160900',
+      label: 'Thwip',
+      value: 'Thwip'
+    },
+    {
+      icon: 'https://vignette.wikia.nocookie.net/portalworldsgame/images/9/98/Blue_Jellyfish.png/revision/latest/scale-to-width-down/340?cb=20190808122051',
+      label: 'Wobble',
+      value: 'Wobble'
+    }
+  ]
+}
 
 Vue.component('stopwatch', {
   data: function () {
@@ -266,6 +319,79 @@ var app = new Vue({
     feedback: null,
     answerVisible: false, // lets us know if the answer is on screen for clicking/arrow through facts
     enableSounds: false,
+    successSound: 'Random',
+    missedSound: 'Random',
+    sounds: {
+      success: [
+        {
+          label: 'Choose your sound!',
+          icon: '',
+          value: ''
+        },
+        {
+          icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
+          label: 'Random',
+          value: 'Random'
+        },
+        {
+          icon: 'https://pbs.twimg.com/profile_images/430115808182665216/6BWNI5EN.png',
+          label: 'Blubblery',
+          value: 'Blubblery'
+        },
+        {
+          icon: 'https://cdn.iconscout.com/icon/free/png-256/chimes-2-1136911.png',
+          label: 'Digital Chime',
+          value: 'DigitalChime'
+        },
+        {
+          icon: 'https://cdn.apk4all.com/wp-content/uploads/apps/Super-Jim-Jump-pixel-3d/JyVkLjd1GeCKKOLEqzDXs0rn3rPPIzlacdCrcPzxP-Q8c01JKtJxJ8FB9t0Za5UDx7s-170x170.png',
+          label: 'Jump',
+          value: 'Jump'
+        },
+        {
+          icon: 'https://www.freeiconspng.com/uploads/success-icon-11.png',
+          label: 'Success',
+          value: 'Success'
+        }
+      ],
+      missed: [
+        {
+          label: 'Choose your sound!',
+          icon: '',
+          value: ''
+        },
+        {
+          icon: 'https://pluspng.com/img-png/random-png-media-random-shuffle-icon-download-png-256.png',
+          label: 'Random',
+          value: 'Random'
+        },
+        {
+          icon: 'https://www.shareicon.net/data/256x256/2016/08/19/817310_music_512x512.png',
+          label: 'Cymbals',
+          value: 'Cymbals'
+        },
+        {
+          icon: 'https://images.vexels.com/media/users/3/137801/isolated/lists/34f9d0c23a14ce84335304e8e0583da7-splatter-paint-droplet-splash-silhouette.png',
+          label: 'Metal Splat',
+          value: 'MetalSplat'
+        },
+        {
+          icon: 'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/spray_can.png',
+          label: 'Rattle',
+          value: 'Rattle'
+        },
+        {
+          icon: 'https://vignette.wikia.nocookie.net/pixel-gun-3d/images/9/93/Scourge_of_the_king_chipping_whip.png/revision/latest/scale-to-width-down/340?cb=20191221160900',
+          label: 'Thwip',
+          value: 'Thwip'
+        },
+        {
+          icon: 'https://vignette.wikia.nocookie.net/portalworldsgame/images/9/98/Blue_Jellyfish.png/revision/latest/scale-to-width-down/340?cb=20190808122051',
+          label: 'Wobble',
+          value: 'Wobble'
+        }
+      ]
+    }
   },
   methods: {
     generateFacts: function () {
@@ -291,6 +417,15 @@ var app = new Vue({
     },
     getAnswer: function () {
       return this.facts.reduce((m, n) => m * n);
+    },
+    initDropdown: function () {
+      if (this.enableSounds) {
+        setTimeout(() => {
+          var selectElements = document.querySelectorAll('select');
+          var selectInstances = M.FormSelect.init(selectElements, {});
+        }, 0)
+
+      }
     },
     resetStreak: function () {
       this.streak = 0;
@@ -322,6 +457,25 @@ var app = new Vue({
         this.answer = null;
       }
     },
+    playSound: function (success = true) {
+      if (!this.enableSounds) return;
+
+      if (success) {
+        const _sounds = this.sounds.success;
+        // We want to generate from 1 index since...
+        // 0 => Random option
+        let sound = this.successSound === 'Random' ? _sounds[generateRandomInt(2, _sounds.length - 1)].value : this.successSound;
+
+        new Audio(`audio/positive/${sound}.mp3`).play();
+      } else {
+        const _sounds = this.sounds.missed;
+        // We want to generate from 1 index since...
+        // 0 => Random option
+        let sound = this.successSound === 'Random' ? _sounds[generateRandomInt(2, _sounds.length - 1)].value : this.missedSound;
+
+        new Audio(`audio/negative/${sound}.mp3`).play();
+      }
+    },
     validate: function () {
       const answer = this.getAnswer();
       if (answer === parseInt(this.answer)) {
@@ -330,6 +484,7 @@ var app = new Vue({
         this.answer = null;
         this.generateFacts();
         this.setStreak();
+        this.playSound();
       } else {
         // Lets keep trying...
 
@@ -339,6 +494,7 @@ var app = new Vue({
         }
         this.answer = null;
         this.resetStreak();
+        this.playSound(false);
       }
     },
     toggleStudyMode: function () {
@@ -374,6 +530,8 @@ var app = new Vue({
 
       } else {
         this.generateFacts();
+        // TODO:  Have to do this for sound dropdowns if enabled.. needs refactored way to fragile
+        this.initDropdown()
       }
 
     },
@@ -381,7 +539,6 @@ var app = new Vue({
       if (this.showAnswer) {
 
       }
-      console.log(`set to ${this.showAnswer}`)
     },
     factsHandler: function () {
       if (this.studyMode) {
@@ -405,7 +562,6 @@ var app = new Vue({
     },
     onKeydown: function (event) {
       const key = event.which || event.keyCode;
-      console.log(event);
       // Look for right arrow key
       if (key === 39) {
         if (this.studyMode) {
@@ -434,6 +590,9 @@ var app = new Vue({
     });
 
     document.addEventListener("keydown", this.onKeydown)
+
+
+
 
     this.generateFacts()
 
