@@ -353,6 +353,14 @@ var app = new Vue({
       ]
     }
   },
+  watch: {
+    successSound() {
+      this.playSound()
+    },
+    missedSound() {
+      this.playSound(false)
+    }
+  },
   methods: {
     generateFacts: function () {
       const range = this.$refs.slider.noUiSlider.get().map(fact => parseInt(fact))
@@ -431,7 +439,7 @@ var app = new Vue({
         const _sounds = this.sounds.missed;
         // We want to generate from 1 index since...
         // 0 => Random option
-        let sound = this.successSound === 'Random' ? _sounds[generateRandomInt(2, _sounds.length - 1)].value : this.missedSound;
+        let sound = this.missedSound === 'Random' ? _sounds[generateRandomInt(2, _sounds.length - 1)].value : this.missedSound;
 
         new Audio(`audio/negative/${sound}.mp3`).play();
       }
@@ -583,6 +591,7 @@ var app = new Vue({
       try {
         const payload = JSON.parse(atob(shareData))
         swal(formatShareMessage(payload));
+        window.history.replaceState(null, null, window.location.pathname);
       } catch (e) {
         console.error(e);
       }
